@@ -13,6 +13,7 @@ namespace Gameplay.Planet
         
         public override void NotifyController(BodyType notifyEvent, object[] parameters)
         {
+            //This will require math aswell (to see if object is near body)
             activeBody = parameters[0] as CelestialBody;
         }
 
