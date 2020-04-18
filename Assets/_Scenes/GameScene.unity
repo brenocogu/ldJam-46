@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 595493820}
   - component: {fileID: 595493819}
   m_Layer: 0
-  m_Name: New Sprite
+  m_Name: skyController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -151,6 +151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04aa2e455981c49138b2401a9be051d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 4
+  damping: 0.25
 --- !u!212 &595493820
 SpriteRenderer:
   m_ObjectHideFlags: 0
