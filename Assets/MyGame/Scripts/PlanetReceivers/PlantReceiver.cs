@@ -32,7 +32,7 @@ namespace Gameplay.Planet
             moonVal.fillAmount = Mathf.InverseLerp(lastPhaseMoon, phaseMoon, moonValue);
             sunVal.fillAmount = Mathf.InverseLerp(lastPhaseSun, phaseSun, sunValue);
             if (sunValue > 0)
-                sunValue -= 0.5f * Time.deltaTime;
+                sunValue -= 0.25f * Time.deltaTime;
         }
 
         protected override void HandleSunEnergy(float distantio)
@@ -43,7 +43,7 @@ namespace Gameplay.Planet
             sunVal.fillAmount = Mathf.InverseLerp(lastPhaseSun, phaseSun, sunValue);
             moonVal.fillAmount = Mathf.InverseLerp(lastPhaseMoon, phaseMoon, moonValue);
             if (moonValue > 0)
-                moonValue -= 0.5f * Time.deltaTime;
+                moonValue -= 0.25f * Time.deltaTime;
         }
 
         public override void HandlePhaseChange()

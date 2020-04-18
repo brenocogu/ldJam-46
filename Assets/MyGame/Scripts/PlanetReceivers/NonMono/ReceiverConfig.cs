@@ -19,6 +19,7 @@ namespace Gameplay.Planet
 
         public int ValidateEnergy(float sunEnergy, float moonEnergy,SpriteRenderer sprito)
         {
+            Debug.Log(moonEnergy);
             PhaseConfig actualPhase = phases.Where(x => (sunEnergy >= x.sunEnergyReq && moonEnergy >= x.moonEnergyReq))
                                         .OrderBy(x => Mathf.Abs((x.sunEnergyReq - sunEnergy) + (x.moonEnergyReq - moonEnergy))).First();
             sprito.sprite = actualPhase.visualChange;

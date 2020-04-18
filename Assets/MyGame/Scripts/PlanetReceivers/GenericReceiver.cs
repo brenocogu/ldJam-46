@@ -25,6 +25,7 @@ namespace Gameplay.Planet
 
         public override void NotifyController(BodyType notifyEvent, object[] parameters)
         {
+            Debug.Log("AAAa");
             if (Vector2.Distance(transform.position, (parameters[0] as MonoBehaviour).transform.position) < 6.8f)
             {
                 activeBody = parameters[0] as CelestialBody;
