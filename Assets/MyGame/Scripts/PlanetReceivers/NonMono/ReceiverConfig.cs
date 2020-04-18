@@ -24,5 +24,13 @@ namespace Gameplay.Planet
             sprito.sprite = actualPhase.visualChange;
             return phases.IndexOf(actualPhase);
         }
+
+        public PhaseConfig GetPhase(int indexo)
+        {
+            if (indexo >= 0 && indexo < phases.Count)
+                return phases[indexo];
+            else
+                return phases.Last();
+        }
     }
 }
