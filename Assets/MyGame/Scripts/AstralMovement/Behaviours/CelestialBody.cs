@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using com.vrglass.eventcontroller;
 
-namespace com.vrglass.eventcontroller
+namespace Gameplay.Sky
 {
+
     public enum BodyType
     {
         SUN,
         MOON
     }
-}
-
-namespace Gameplay.Sky
-{
-    
 
     public class CelestialBody : MonoBehaviour
     {

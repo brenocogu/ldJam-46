@@ -10,38 +10,46 @@ namespace Gameplay.Planet
     {
         protected CelestialBody activeBody;
         public float sunValue, moonValue, treshHoldDistance;
+        protected SpriteRenderer spr;
+        [HideInInspector] public int actualPhase;
+
+        private void Start()
+        {
+            spr = GetComponent<SpriteRenderer>();
+        }
 
         public override void NotifyController(BodyType notifyEvent, object[] parameters)
         {
-            Debug.Log("AAAA");
+
             //This will require math aswell (to see if object is near body)
             //SUN UNDER 6
             //mOON UNDER 7
-            if (Vector2.Distance(transform.position, (parameters[0] as MonoBehaviour).transform.position) < 6)
+            Debug.Log(Vector2.Distance(transform.position, (parameters[0] as MonoBehaviour).transform.position));
+            if (Vector2.Distance(transform.position, (parameters[0] as MonoBehaviour).transform.position) < 6.8f)
             {
                 activeBody = parameters[0] as CelestialBody;
-                treshHoldDistance = 6;
+                treshHoldDistance = 6.8f;
             }
             else
             {
                 activeBody = parameters[1] as CelestialBody;
-                treshHoldDistance = 7;
+                treshHoldDistance = 7.2f;
             }
         }
 
-        private void Update()
+        protected void Update()
         {
             if (activeBody)
             {
                 float distantio = Vector2.Distance(transform.position, activeBody.transform.position);
                 if(activeBody.cBody == BodyType.SUN)
                 {
-                    sunValue += Mathf.InverseLerp(treshHoldDistance, 2, distantio);
+                    sunValue += Mathf.InverseLerp(treshHoldDistance, 2, distantio) * Time.deltaTime;
                     //decrease moon
                 }
                 else
                 {
-                    moonValue += Mathf.InverseLerp(treshHoldDistance, 2, distantio);
+                    moonValue += Mathf.InverseLerp(treshHoldDistance, 2, distantio) * Time.deltaTime;
                     //Decrease sun
                 }
             }
