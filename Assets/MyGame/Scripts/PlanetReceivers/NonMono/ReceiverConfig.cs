@@ -12,14 +12,15 @@ namespace Gameplay.Planet
         public struct PhaseConfig
         {
             public Sprite visualChange;
-            public float energyRequired;
+            public float sunEnergyReq, moonEnergyReq;
         }
 
         [SerializeField] List<PhaseConfig> phases;
 
-        public int ValidateSunEnergy(float energy,SpriteRenderer sprito)
+        public int ValidateSunEnergy(float sunEnergy, float moonEnergy,SpriteRenderer sprito)
         {
-            PhaseConfig actualPhase = phases.Where(x => energy >= x.energyRequired).OrderBy(x => Mathf.Abs(x.energyRequired - energy)).First();
+            PhaseConfig actualPhase = phases.Where(x => (sunEnergy >= x.sunEnergyReq && moonEnergy >= x.moonEnergyReq))
+                                        .OrderBy(x => Mathf.Abs((x.sunEnergyReq - sunEnergy) + (x.moonEnergyReq - moonEnergy))).First();
             sprito.sprite = actualPhase.visualChange;
             return phases.IndexOf(actualPhase);
         }
