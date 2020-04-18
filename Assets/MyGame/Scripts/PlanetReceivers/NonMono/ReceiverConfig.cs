@@ -17,7 +17,7 @@ namespace Gameplay.Planet
 
         [SerializeField] List<PhaseConfig> phases;
 
-        public int ValidateSunEnergy(float sunEnergy, float moonEnergy,SpriteRenderer sprito)
+        public int ValidateEnergy(float sunEnergy, float moonEnergy,SpriteRenderer sprito)
         {
             PhaseConfig actualPhase = phases.Where(x => (sunEnergy >= x.sunEnergyReq && moonEnergy >= x.moonEnergyReq))
                                         .OrderBy(x => Mathf.Abs((x.sunEnergyReq - sunEnergy) + (x.moonEnergyReq - moonEnergy))).First();

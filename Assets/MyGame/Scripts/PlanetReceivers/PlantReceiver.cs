@@ -17,7 +17,7 @@ namespace Gameplay.Planet
         public new void Update()
         {
             base.Update();
-            actualPhase = config.ValidateSunEnergy(sunValue, moonValue, spr);
+            actualPhase = config.ValidateEnergy(sunValue, moonValue, spr);
         }
 
     }
