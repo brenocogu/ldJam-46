@@ -10,6 +10,7 @@ namespace Gameplay.Planet
     public class PlantReceiver : GenericReceiver
     {
         [SerializeField] ReceiverConfig config;
+        ReceiverConfig.PhaseConfig nextPhase;
         public override void NotifyController(BodyType notifyEvent, object[] parameters)
         {
             base.NotifyController(notifyEvent, parameters);
@@ -25,19 +26,29 @@ namespace Gameplay.Planet
 
         protected override void HandleMoonEnergy(float distantio)
         {
-            base.HandleMoonEnergy(distantio);
+            if(moonValue <= nextPhase.moonEnergyReq + 4)
+                base.HandleMoonEnergy(distantio);
+
             moonVal.fillAmount = Mathf.InverseLerp(lastPhaseMoon, phaseMoon, moonValue);
+            sunVal.fillAmount = Mathf.InverseLerp(lastPhaseSun, phaseSun, sunValue);
+            if (sunValue > 0)
+                sunValue -= 0.5f * Time.deltaTime;
         }
 
         protected override void HandleSunEnergy(float distantio)
         {
-            base.HandleSunEnergy(distantio);
+            if(sunValue <= nextPhase.sunEnergyReq + 4)
+                base.HandleSunEnergy(distantio);
+
             sunVal.fillAmount = Mathf.InverseLerp(lastPhaseSun, phaseSun, sunValue);
+            moonVal.fillAmount = Mathf.InverseLerp(lastPhaseMoon, phaseMoon, moonValue);
+            if (moonValue > 0)
+                moonValue -= 0.5f * Time.deltaTime;
         }
 
         public override void HandlePhaseChange()
         {
-            ReceiverConfig.PhaseConfig nextPhase = config.GetPhase(actualPhase + 1);
+            nextPhase = config.GetPhase(actualPhase + 1);
             ReceiverConfig.PhaseConfig currPhase = config.GetPhase(actualPhase);
             lastPhaseMoon = currPhase.moonEnergyReq;
             lastPhaseSun = currPhase.sunEnergyReq;

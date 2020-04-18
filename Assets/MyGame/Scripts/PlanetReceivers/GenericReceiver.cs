@@ -64,11 +64,13 @@ namespace Gameplay.Planet
         protected virtual void HandleSunEnergy(float distantio)
         {
             sunValue += Mathf.InverseLerp(treshHoldDistance, 2, distantio) * Time.deltaTime;
+            
         }
 
         protected virtual void HandleMoonEnergy(float distantio)
         {
             moonValue += Mathf.InverseLerp(treshHoldDistance, 2, distantio) * Time.deltaTime;
+            
         }
     }
 }
