@@ -15,7 +15,11 @@ namespace Gameplay.Planet
         protected float lastPhaseMoon, lastPhaseSun;
         protected float minEnergyValueSun, minEnergyValueMoon;
         protected SpriteRenderer spr;
+        [SerializeField] public float moonThreshold, sunThreshold;
         [HideInInspector] public int actualPhase, deltaPhase;
+
+        [SerializeField] protected ReceiverConfig config;
+        protected ReceiverConfig.PhaseConfig nextPhase;
 
         [SerializeField]protected Image sunVal, moonVal;
         private void Start()
@@ -61,23 +65,79 @@ namespace Gameplay.Planet
                 deltaPhase = actualPhase;
             }
         }
-
+        /// <summary>
+        /// Void called when the actual phase from config has changed
+        /// </summary>
         public abstract void HandlePhaseChange();
+
+        /// <summary>
+        /// Called when sun energy is bigger than the actual phase + sun threshold
+        /// </summary>
+        public abstract void HandleSunOverload();
+
+
+        /// <summary>
+        /// Called when moon energy is bigger than the actual phase + moon threshold
+        /// </summary>
+        public abstract void HandleMoonOverload();
+
+        /// <summary>
+        /// Called when sun energy is smaller than the actual phase min sun val - sun threshold
+        /// </summary>
+        public abstract void HandleSunUnderload();
+
+        /// <summary>
+        /// Called when moon energy is smaller than the actual phase min moon val - moon threshold
+        /// </summary>
+        public abstract void HandleMoonUnderload();
 
         protected virtual void HandleSunEnergy(float distantio)
         {
-            sunValue += Mathf.InverseLerp(treshHoldDistance, 2, distantio) * Time.deltaTime;
-            if (moonValue > minEnergyValueMoon)
-                moonValue -= 0.15f * Time.deltaTime;
-            UpdateGraphics();
+            if (sunValue <= nextPhase.sunEnergyReq + sunThreshold)
+            {
+                sunValue += Mathf.InverseLerp(treshHoldDistance, 2, distantio) * Time.deltaTime;
+                MoonEnergyLoss();
+                UpdateGraphics();
+            }
+            else
+            {
+                HandleSunOverload();
+                MoonEnergyLoss();
+                UpdateGraphics();
+            }
         }
+
+        
 
         protected virtual void HandleMoonEnergy(float distantio)
         {
-            moonValue += Mathf.InverseLerp(treshHoldDistance, 2, distantio) * Time.deltaTime;
-            if (sunValue > minEnergyValueSun)
-                sunValue -= 0.15f * Time.deltaTime;
-            UpdateGraphics();
+            if (moonValue <= nextPhase.moonEnergyReq + moonThreshold)
+            {
+                moonValue += Mathf.InverseLerp(treshHoldDistance, 2, distantio) * Time.deltaTime;
+                SunEnergyLoss();
+                UpdateGraphics();
+            }
+            else
+            {
+                HandleMoonOverload();
+                SunEnergyLoss();
+                UpdateGraphics();
+            }
+            
+        }
+
+        protected virtual void SunEnergyLoss() {
+            sunValue = Mathf.Clamp(sunValue - 0.15f * Time.deltaTime, minEnergyValueSun - sunThreshold, phaseSun + sunThreshold);
+            if (sunValue <= minEnergyValueSun)
+                HandleSunUnderload();
+                
+        }
+
+        protected virtual void MoonEnergyLoss()
+        {
+            moonValue = Mathf.Clamp(moonValue - 0.15f * Time.deltaTime, minEnergyValueMoon - moonThreshold, phaseMoon + moonThreshold);
+            if (moonValue <= minEnergyValueMoon)
+                HandleMoonUnderload();
         }
 
         protected virtual void UpdateGraphics()

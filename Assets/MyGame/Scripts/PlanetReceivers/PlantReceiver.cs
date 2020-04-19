@@ -9,8 +9,6 @@ namespace Gameplay.Planet
 {
     public class PlantReceiver : GenericReceiver
     {
-        [SerializeField] ReceiverConfig config;
-        ReceiverConfig.PhaseConfig nextPhase;
         public override void NotifyController(BodyType notifyEvent, object[] parameters)
         {
             base.NotifyController(notifyEvent, parameters);
@@ -24,18 +22,6 @@ namespace Gameplay.Planet
             actualPhase = config.ValidateEnergy(sunValue, moonValue, spr);
         }
 
-        protected override void HandleMoonEnergy(float distantio)
-        {
-            if(moonValue <= nextPhase.moonEnergyReq + 4)
-                base.HandleMoonEnergy(distantio);
-        }
-
-        protected override void HandleSunEnergy(float distantio)
-        {
-            if(sunValue <= nextPhase.sunEnergyReq + 4)
-                base.HandleSunEnergy(distantio);
-        }
-
         public override void HandlePhaseChange()
         {
             if (actualPhase == 2)
@@ -47,8 +33,30 @@ namespace Gameplay.Planet
             lastPhaseSun = currPhase.sunEnergyReq;
             phaseSun = nextPhase.sunEnergyReq;
             phaseMoon = nextPhase.moonEnergyReq;
+            minEnergyValueMoon = lastPhaseMoon;
+            minEnergyValueSun = lastPhaseSun;
 
             UpdateGraphics();
+        }
+
+        public override void HandleMoonOverload()
+        {
+
+        }
+
+        public override void HandleMoonUnderload()
+        {
+
+        }
+
+        public override void HandleSunOverload()
+        {
+
+        }
+
+        public override void HandleSunUnderload()
+        {
+
         }
     }
 }

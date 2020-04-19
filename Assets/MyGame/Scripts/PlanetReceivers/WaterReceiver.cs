@@ -6,8 +6,7 @@ namespace Gameplay.Planet
 {
     public class WaterReceiver : GenericReceiver
     {
-        [SerializeField] ReceiverConfig config;
-        ReceiverConfig.PhaseConfig nextPhase;
+
         public override void HandlePhaseChange()
         {
             if (actualPhase == 2)
@@ -31,14 +30,27 @@ namespace Gameplay.Planet
 
         public new void Update()
         {
-            Debug.Log(actualPhase);
             base.Update();
             actualPhase = config.ValidateEnergy(sunValue, moonValue);
         }
 
-        protected override void HandleSunEnergy(float distantio)
+        public override void HandleMoonOverload()
         {
-            base.HandleSunEnergy(distantio);
+            
+        }
+
+        public override void HandleMoonUnderload()
+        {
+        }
+
+        public override void HandleSunOverload()
+        {
+
+        }
+
+        public override void HandleSunUnderload()
+        {
+            Debug.Log("AAAAAA");
         }
     }
 }
