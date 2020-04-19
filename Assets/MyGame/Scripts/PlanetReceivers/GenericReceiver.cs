@@ -13,19 +13,21 @@ namespace Gameplay.Planet
         protected float sunValue, moonValue, treshHoldDistance;
         protected float phaseMoon, phaseSun;
         protected float lastPhaseMoon, lastPhaseSun;
+        protected float minEnergyValueSun, minEnergyValueMoon;
         protected SpriteRenderer spr;
         [HideInInspector] public int actualPhase, deltaPhase;
 
         [SerializeField]protected Image sunVal, moonVal;
         private void Start()
         {
-            spr = GetComponent<SpriteRenderer>();
+            minEnergyValueSun   = 0;
+            minEnergyValueMoon  = 0;
+            spr                 = GetComponent<SpriteRenderer>();
             HandlePhaseChange();
         }
 
         public override void NotifyController(BodyType notifyEvent, object[] parameters)
         {
-            Debug.Log("AAAa");
             if (Vector2.Distance(transform.position, (parameters[0] as MonoBehaviour).transform.position) < 6.8f)
             {
                 activeBody = parameters[0] as CelestialBody;
@@ -65,13 +67,23 @@ namespace Gameplay.Planet
         protected virtual void HandleSunEnergy(float distantio)
         {
             sunValue += Mathf.InverseLerp(treshHoldDistance, 2, distantio) * Time.deltaTime;
-            
+            if (moonValue > minEnergyValueMoon)
+                moonValue -= 0.15f * Time.deltaTime;
+            UpdateGraphics();
         }
 
         protected virtual void HandleMoonEnergy(float distantio)
         {
             moonValue += Mathf.InverseLerp(treshHoldDistance, 2, distantio) * Time.deltaTime;
-            
+            if (sunValue > minEnergyValueSun)
+                sunValue -= 0.15f * Time.deltaTime;
+            UpdateGraphics();
+        }
+
+        protected virtual void UpdateGraphics()
+        {
+            sunVal.fillAmount = Mathf.InverseLerp(lastPhaseSun, phaseSun, sunValue);
+            moonVal.fillAmount = Mathf.InverseLerp(lastPhaseMoon, phaseMoon, moonValue);
         }
     }
 }
