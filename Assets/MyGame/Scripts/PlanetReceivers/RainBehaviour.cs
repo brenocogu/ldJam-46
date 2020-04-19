@@ -34,7 +34,10 @@ namespace Gameplay.Planet {
             yield return new WaitForSeconds(Random.Range(1f, 1.25f));
             transform.eulerAngles = Vector3.forward * 180;
             zRot = 180;
+            if (Random.Range(-1, 1) == 0)
+                speed = -speed;
             gameObject.SetActive(false);
+
         }
     }
 }
