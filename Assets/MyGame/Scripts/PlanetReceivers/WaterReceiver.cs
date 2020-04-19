@@ -6,16 +6,17 @@ namespace Gameplay.Planet
 {
     public class WaterReceiver : GenericReceiver
     {
-
+        [SerializeField] GameObject rainObj;
         public override void HandlePhaseChange()
         {
-            if (actualPhase == 2)
-            {
-                sunValue = 0;
-                moonValue = 0;
-                actualPhase = 0;
-            }
+            if(actualPhase == 1)
+                rainObj.SetActive(true);
 
+            if (actualPhase == 2)
+                actualPhase = 0;
+
+            sunValue = 0;
+            moonValue = 0;
             nextPhase = config.GetPhase(actualPhase + 1);
             ReceiverConfig.PhaseConfig currPhase = config.GetPhase(actualPhase);
             lastPhaseMoon       = currPhase.moonEnergyReq;

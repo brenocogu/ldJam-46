@@ -10,6 +10,7 @@ namespace Gameplay.Planet
     public class PlantReceiver : GenericReceiver
     {
         [SerializeField] List<int> waterLevels;
+        [SerializeField] Image waterIndicator;
         int currentWaterLevel;
         public override void NotifyController(BodyType notifyEvent, object[] parameters)
         {
@@ -41,6 +42,12 @@ namespace Gameplay.Planet
             minEnergyValueSun = lastPhaseSun;
 
             UpdateGraphics();
+        }
+
+        protected override void UpdateGraphics()
+        {
+            base.UpdateGraphics();
+            waterIndicator.fillAmount = Mathf.InverseLerp(0, waterLevels[actualPhase], currentWaterLevel);
         }
 
         public void IncrementWaterLevel()

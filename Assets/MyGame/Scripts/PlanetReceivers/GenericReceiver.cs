@@ -93,37 +93,27 @@ namespace Gameplay.Planet
 
         protected virtual void HandleSunEnergy(float distantio)
         {
-            if (sunValue <= nextPhase.sunEnergyReq + sunThreshold)
-            {
-                sunValue += Mathf.InverseLerp(treshHoldDistance, 2, distantio) * Time.deltaTime;
-                MoonEnergyLoss();
-                UpdateGraphics();
-            }
-            else
-            {
+
+            MoonEnergyLoss();
+            UpdateGraphics();
+            sunValue += Mathf.InverseLerp(treshHoldDistance, 2, distantio) * Time.deltaTime;
+            sunValue = Mathf.Clamp(sunValue, minEnergyValueSun, nextPhase.sunEnergyReq + sunThreshold);
+            if (sunValue >= nextPhase.sunEnergyReq)
                 HandleSunOverload();
-                MoonEnergyLoss();
-                UpdateGraphics();
-            }
+            
         }
 
         
 
         protected virtual void HandleMoonEnergy(float distantio)
         {
-            if (moonValue <= nextPhase.moonEnergyReq + moonThreshold)
-            {
-                moonValue += Mathf.InverseLerp(treshHoldDistance, 2, distantio) * Time.deltaTime;
-                SunEnergyLoss();
-                UpdateGraphics();
-            }
-            else
-            {
+            SunEnergyLoss();
+            UpdateGraphics();
+            moonValue += Mathf.InverseLerp(treshHoldDistance, 2, distantio) * Time.deltaTime;
+            moonValue = Mathf.Clamp(moonValue, minEnergyValueMoon, nextPhase.moonEnergyReq + moonThreshold);
+            if (moonValue >= nextPhase.moonEnergyReq)
                 HandleMoonOverload();
-                SunEnergyLoss();
-                UpdateGraphics();
-            }
-            
+
         }
 
         protected virtual void SunEnergyLoss() {

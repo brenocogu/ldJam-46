@@ -29,10 +29,11 @@ namespace Gameplay.Planet {
 
         IEnumerator DespawnRoutine(PlantReceiver planto)
         {
-            yield return new WaitForSeconds(Random.Range(0.3f, 1));
+            yield return new WaitForSeconds(Random.Range(1f, 1.5f));
             planto.IncrementWaterLevel();
-            yield return new WaitForSeconds(Random.Range(0.2f, 0.5f));
+            yield return new WaitForSeconds(Random.Range(1f, 1.25f));
             transform.eulerAngles = Vector3.forward * 180;
+            zRot = 180;
             gameObject.SetActive(false);
         }
     }
