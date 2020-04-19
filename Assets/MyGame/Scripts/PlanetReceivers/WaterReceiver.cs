@@ -50,7 +50,7 @@ namespace Gameplay.Planet
 
         public override void HandleSunUnderload()
         {
-            Debug.Log("AAAAAA");
+
         }
     }
 }
